@@ -1,12 +1,12 @@
 <?php
+
 namespace BD;
 
-interface ActiveRecord{
+interface ActiveRecord
+{
 
-    public function save():bool;
-    public function delete():bool;
-    public static function find($id):Object;
-    public static function findall():array;
+    public function save(): \mysqli_result|bool;
+    public function delete(): \mysqli_result|bool;
+    public static function find($id): Object;
+    public static function findall(): array;
 }
-
-?>

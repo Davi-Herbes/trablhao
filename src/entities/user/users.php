@@ -1,8 +1,11 @@
 <?php
+
+use BD\ActiveRecord;
+
 require_once __DIR__ . "/../../../config/database/config.php";
 require_once __DIR__ . "/../../../config/database/mysql.php";
 
-class User
+class User implements ActiveRecord
 {
     private $username;
     private $email;
@@ -26,6 +29,30 @@ class User
         } else {
             $sql = "INSERT INTO users (username,email,password_hash) VALUES ('{$this->username}','{$this->email}','{$this->passwordHash}')";
         }
+        return $conexao->executa($sql);
+    }
+
+    public static function find($id)
+    {
+        $conexao = new MySQL();
+        $sql = "SELECT * FROM users WHERE id = '{$id}';";
+
+        return $conexao->executa($sql);
+    }
+
+    public static function findAll()
+    {
+        $conexao = new MySQL();
+        $sql = "SELECT * FROM users;";
+
+        return $conexao->executa($sql);
+    }
+
+    public function delete($id)
+    {
+        $conexao = new MySQL();
+        $sql = "DELETE users WHERE id='{$id}';";
+
         return $conexao->executa($sql);
     }
 }
