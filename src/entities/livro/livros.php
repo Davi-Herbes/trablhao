@@ -30,4 +30,29 @@ class Livro
         }
         return $conexao->executa($sql);
     }
+
+
+    public static function find($id)
+    {
+        $conexao = new MySQL();
+        $sql = "SELECT * FROM livros WHERE id = '{$id}';";
+
+        return $conexao->executa($sql);
+    }
+
+    public static function findAll()
+    {
+        $conexao = new MySQL();
+        $sql = "SELECT * FROM livros;";
+
+        return $conexao->executa($sql);
+    }
+
+    public function delete($id)
+    {
+        $conexao = new MySQL();
+        $sql = "DELETE livros WHERE id='{$id}';";
+
+        return $conexao->executa($sql);
+    }
 }

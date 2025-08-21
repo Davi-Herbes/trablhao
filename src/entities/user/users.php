@@ -1,18 +1,15 @@
 <?php
 
-use BD\ActiveRecord;
-
 require_once __DIR__ . "/../../../config/database/config.php";
 require_once __DIR__ . "/../../../config/database/mysql.php";
 
-class User implements ActiveRecord
+class User
 {
-    private $username;
-    private $email;
-    private $passwordHash;
+    public $username;
+    public $email;
+    public $passwordHash;
 
 
-    private int $id;
 
     public function __construct($username, $email, $passwordPlain)
     {
@@ -24,11 +21,11 @@ class User implements ActiveRecord
     public function save()
     {
         $conexao = new MySQL();
-        if (isset($this->id)) {
-            $sql = "UPDATE users SET username = '{$this->username}' ,email = '{$this->email}', password_hash = '{$this->passwordHash}' WHERE id = {$this->id}";
-        } else {
-            $sql = "INSERT INTO users (username,email,password_hash) VALUES ('{$this->username}','{$this->email}','{$this->passwordHash}')";
-        }
+        // if (isset($this->id)) {
+        //     $sql = "UPDATE users SET username = '{$this->username}' ,email = '{$this->email}', password_hash = '{$this->passwordHash}' WHERE id = {$this->id}";
+        // } else {
+        $sql = "INSERT INTO users (username,email,password_hash) VALUES ('{$this->username}','{$this->email}','{$this->passwordHash}')";
+        // }
         return $conexao->executa($sql);
     }
 
@@ -37,7 +34,15 @@ class User implements ActiveRecord
         $conexao = new MySQL();
         $sql = "SELECT * FROM users WHERE id = '{$id}';";
 
-        return $conexao->executa($sql);
+        return $conexao->consulta($sql);
+    }
+
+    public static function findByEmail($email)
+    {
+        $conexao = new MySQL();
+        $sql = "SELECT * FROM users WHERE email = '{$email}';";
+
+        return $conexao->consulta($sql);
     }
 
     public static function findAll()
@@ -45,7 +50,7 @@ class User implements ActiveRecord
         $conexao = new MySQL();
         $sql = "SELECT * FROM users;";
 
-        return $conexao->executa($sql);
+        return $conexao->consulta($sql);
     }
 
     public function delete($id)
